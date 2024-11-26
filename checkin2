@@ -1,0 +1,114 @@
+'''
+Tracks financial information from users' input.
+
+Driver/Navigator: Jayson Lee, 
+Assignment: Finance Manage Final Project
+Date: 11/25/2024
+'''
+class Person:
+    '''
+    A class to represent a person who can register, track expenses, 
+    and view their financial information.
+    '''
+    
+    def __init__(self, username: str, balance: float = 0.0):
+        '''
+        Initializes a new Person instance with a username and an initial balance.
+        
+        Args:
+            username (str): The username of the person.
+            balance (float): The initial balance of the person (default is 0.0).
+        '''
+        self.username = username
+        self.expenses = {}  
+        self.balance = balance
+
+    def register_user(self):
+        '''
+        Registers a new user.
+        '''
+        print(f"User {self.username} registered successfully.")
+        while True:  
+            earnings_input = input("Enter your monthly earnings. This will be used as your initial balance to see how much you have spent on each category.: $")
+            if earnings_input.replace('.', '', 1).isdigit() and earnings_input.count('.') <= 1:
+                self.balance = float(earnings_input)
+                print(f"Initial balance set to: ${self.balance:.2f}")
+                break
+            else:
+                print("Invalid input. Please enter a valid number for your monthly earnings.")
+
+    def display_information(self):
+        '''
+        Displays the current user's information such as their username, balance, and expenses.
+        '''
+        print(f"\nUser: {self.username}")
+        print(f"Initial Balance: ${self.balance:.2f}")
+        print("Expenses (category):")
+        for category, amount in self.expenses.items():
+            print(f"{category}: ${amount:.2f}")
+            
+    def want_add_expenses(self):
+        '''
+        Asks the user for an expense amount and category, then adds it to the user's list of expenses.
+        If the category already exists, it will add it to the existing category.
+        '''
+        amount_input = input("\nEnter expense amount: $")
+        if amount_input.isdigit():
+            amount = float(amount_input)
+            category = input("Enter expense category (ex: Food, Transportation, Rent, Groceries, School, Health, Subscriptions): ").lower()
+            if category in self.expenses:
+                self.expenses[category] += amount
+            else:
+                self.expenses[category] = amount
+            self.balance -= amount  
+            print(f"Added expense of ${amount:.2f} for {category}.")
+        else:
+            print("Invalid amount entered. Please enter a valid number for the expense.")
+
+    def need_expenses(self):
+        '''
+        Returns the total amount of expenses.
+        '''
+        total_expenses = sum(self.expenses.values())
+        print(f"Total expenses: ${total_expenses:.2f}")
+        return total_expenses
+
+    def calculate_balance(self):
+        '''
+        Calculates the user's current balance after subtracting the expenses.
+        '''
+        total_expenses = self.need_expenses()
+        balance = self.balance - total_expenses
+        print(f"Remaining balance: ${balance:.2f}")
+        return balance
+
+    def calculate_total(self):
+        '''
+        Calculates all the expenses combined.
+        '''
+        total = sum(self.expenses.values())
+        print(f"Total of all expenses: ${total:.2f}")
+        return total
+
+def main():
+    '''
+    Main function to run the calculations.
+    '''
+    username = input("Enter your username: ")
+    user = Person(username)
+    user.register_user()
+
+    while True:
+        ask_add_expense = input("\nDo you want to add an expense? (yes/no): ").lower()
+        if ask_add_expense == 'yes':
+            user.want_add_expenses()
+        elif ask_add_expense == 'no':
+            break
+        else:
+            print("Invalid input, please type 'yes' or 'no'.")
+
+    user.display_information()
+    user.calculate_balance()
+
+if __name__ == "__main__":
+    main()
