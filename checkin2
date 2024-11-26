@@ -1,7 +1,7 @@
 '''
 Tracks financial information from users' input.
 
-Driver/Navigator: Jayson Lee, 
+Driver/Navigator: Jayson Lee, Alejandra Saravia, 
 Assignment: Finance Manage Final Project
 Date: 11/25/2024
 '''
@@ -25,7 +25,7 @@ class Person:
 
     def register_user(self):
         '''
-        Registers a new user.
+        Registers a new user and sets their balance as their monthly earnings
         '''
         print(f"User {self.username} registered successfully.")
         while True:  
@@ -68,6 +68,7 @@ class Person:
     def need_expenses(self):
         '''
         Returns the total amount of expenses.
+            Float: total expenses
         '''
         total_expenses = sum(self.expenses.values())
         print(f"Total expenses: ${total_expenses:.2f}")
@@ -76,6 +77,9 @@ class Person:
     def calculate_balance(self):
         '''
         Calculates the user's current balance after subtracting the expenses.
+        
+        Returns:
+            float: The remaining account balance after expenses
         '''
         total_expenses = self.need_expenses()
         balance = self.balance - total_expenses
@@ -85,6 +89,9 @@ class Person:
     def calculate_total(self):
         '''
         Calculates all the expenses combined.
+        
+        Returns:
+            float: Total expenses 
         '''
         total = sum(self.expenses.values())
         print(f"Total of all expenses: ${total:.2f}")
