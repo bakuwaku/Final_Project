@@ -1,7 +1,7 @@
 '''
 Tracks financial information from users' input.
 
-Driver/Navigator: Jayson Lee, Alejandra Saravia, 
+Driver/Navigator: Jayson Lee, Alejandra Saravia, Ester Manukyan
 Assignment: Finance Manage Final Project
 Date: 11/25/2024
 '''
@@ -11,28 +11,27 @@ class Person:
     and view their financial information.
     '''
     
-    def __init__(self, username: str, balance: float = 0.0):
+    def __init__(self, username: str):
         '''
-        Initializes a new Person instance with a username and an initial balance.
+        Initializes a new Person instance with a username and a zero balance.
         
         Args:
             username (str): The username of the person.
-            balance (float): The initial balance of the person (default is 0.0).
         '''
         self.username = username
         self.expenses = {}  
-        self.balance = balance
+        self.monthly_earnings = 0.0
 
     def register_user(self):
         '''
-        Registers a new user and sets their balance as their monthly earnings
+        Registers a new user and sets their monthly earnings.
         '''
         print(f"User {self.username} registered successfully.")
         while True:  
-            earnings_input = input("Enter your monthly earnings. This will be used as your initial balance to see how much you have spent on each category.: $")
+            earnings_input = input("Enter your monthly earnings. This will be used to calculate your remaining balance: $")
             if earnings_input.replace('.', '', 1).isdigit() and earnings_input.count('.') <= 1:
-                self.balance = float(earnings_input)
-                print(f"Initial balance set to: ${self.balance:.2f}")
+                self.monthly_earnings = float(earnings_input)
+                print(f"Monthly earnings set to: ${self.monthly_earnings:.2f}")
                 break
             else:
                 print("Invalid input. Please enter a valid number for your monthly earnings.")
@@ -42,64 +41,44 @@ class Person:
         Displays the current user's information such as their username, balance, and expenses.
         '''
         print(f"\nUser: {self.username}")
-        print(f"Initial Balance: ${self.balance:.2f}")
+        print(f"Monthly Earnings: ${self.monthly_earnings:.2f}")
         print("Expenses (category):")
         for category, amount in self.expenses.items():
             print(f"{category}: ${amount:.2f}")
-            
+        remaining_balance = self.calculate_balance()
+        print(f"Remaining Balance: ${remaining_balance:.2f}")
+
     def want_add_expenses(self):
         '''
         Asks the user for an expense amount and category, then adds it to the user's list of expenses.
         If the category already exists, it will add it to the existing category.
         '''
         amount_input = input("\nEnter expense amount: $")
-        if amount_input.isdigit():
+        if amount_input.replace('.', '', 1).isdigit() and amount_input.count('.') <= 1:
             amount = float(amount_input)
-            category = input("Enter expense category (ex: Food, Transportation, Rent, Groceries, School, Health, Subscriptions): ").lower()
+            category = input("Enter expense category (e.g., Food, Transportation, Rent, etc.): ").lower()
             if category in self.expenses:
                 self.expenses[category] += amount
             else:
                 self.expenses[category] = amount
-            self.balance -= amount  
             print(f"Added expense of ${amount:.2f} for {category}.")
         else:
             print("Invalid amount entered. Please enter a valid number for the expense.")
 
-    def need_expenses(self):
-        '''
-        Returns the total amount of expenses.
-            Float: total expenses
-        '''
-        total_expenses = sum(self.expenses.values())
-        print(f"Total expenses: ${total_expenses:.2f}")
-        return total_expenses
-
     def calculate_balance(self):
         '''
-        Calculates the user's current balance after subtracting the expenses.
+        Calculates the user's remaining balance after subtracting the total expenses from monthly earnings.
         
         Returns:
-            float: The remaining account balance after expenses
+            float: The remaining account balance after expenses.
         '''
-        total_expenses = self.need_expenses()
-        balance = self.balance - total_expenses
-        print(f"Remaining balance: ${balance:.2f}")
-        return balance
-
-    def calculate_total(self):
-        '''
-        Calculates all the expenses combined.
-        
-        Returns:
-            float: Total expenses 
-        '''
-        total = sum(self.expenses.values())
-        print(f"Total of all expenses: ${total:.2f}")
-        return total
+        total_expenses = sum(self.expenses.values())
+        remaining_balance = self.monthly_earnings - total_expenses
+        return remaining_balance
 
 def main():
     '''
-    Main function to run the calculations.
+    Main function to run the financial tracking program.
     '''
     username = input("Enter your username: ")
     user = Person(username)
@@ -115,7 +94,7 @@ def main():
             print("Invalid input, please type 'yes' or 'no'.")
 
     user.display_information()
-    user.calculate_balance()
 
 if __name__ == "__main__":
     main()
+
