@@ -1,1 +1,11 @@
+What our project is and what it does.
+- Our project is a finance tracker program that keeps track of a users monthly earnings and expenses. It allows a user to input their monthly earnings and expenses by categories to calculate their remaining account balance for the month. 
+
+An explanation on how to run the program from the command line.
+- To run the program from the command line on a mac type python3 final_finance_manager.py 
+
+Documentation on how to use the program / how to interpret the output of the program.
+- After you run it from the command line it will ask you a series of questions. First, to enter your username and your monthly earnings. It will then ask if you would like to add an expense and if so, the expense amount. It will continue asking if you would like to add an expense until you type no. After you have implimented your expenses it will display a users name, monthly earnings, expenses(by category), and lastly the remaining balance. The output is all calculated by a users input. 
+
+An annotated bibliography of all sources you used to develop the program and how you used them.
 
